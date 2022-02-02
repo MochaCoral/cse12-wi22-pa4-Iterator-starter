@@ -12,6 +12,7 @@
 
 import static org.junit.Assert.*;
 
+import java.net.http.WebSocket.Listener;
 import java.rmi.server.ExportException;
 import java.util.NoSuchElementException;
 
@@ -36,7 +37,9 @@ public class MyLinkedListCustomTester {
     public void setUp() throws Exception {
         listEmpty = new MyLinkedList();
         list3Elements = new MyLinkedList();
-        list3Elements.add("")
+        list3Elements.add("Ruby");
+        list3Elements.add("Sapphire");
+        list3Elements.add("Emerald");
         exceptionThrown = false;
     }
 
@@ -56,12 +59,15 @@ public class MyLinkedListCustomTester {
     public void testNext() {
         //test if method throws NoSuchElementException
         try {
-
+            list3Elements.next();
+            list3Elements.next();
+            list3Elements.next();
         }
         catch(NoSuchElementException e) {
             exceptionThrown = true;
         }
-        assertTrue("method should throw exception(next)", exceptionThrown);
+        assertTrue("method should throw No Such ELement exception(next)",
+            exceptionThrown);
 
     }
 
@@ -71,6 +77,8 @@ public class MyLinkedListCustomTester {
     @Test
     public void testHasPrevious() {
         //test if sentinel node returns true/empty list
+        assertFalse("Empty list should return false(hasPrevious)", 
+            listEmpty.hasPrevious());
     }
 
     /**
@@ -80,7 +88,7 @@ public class MyLinkedListCustomTester {
     public void testPrevious() {
         //test if method throws NoSuchElementException
         try {
-
+            list3Elements.previous();
         }
         catch (NoSuchElementException e) {
             exceptionThrown = true;
@@ -93,7 +101,8 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testNextIndex() {
-        //test on empty MLL list 
+        int index = listEmpty.nextIndex();
+        assertEquals("nextIndex should return -1", -1, index);
     }
 
     /**
@@ -102,6 +111,8 @@ public class MyLinkedListCustomTester {
     @Test
     public void testPreviousIndex() {
         //test on empty MLL list
+        int index = listEmpty.previousIndex();
+        assertEquals("previousIndex should return -1", -1, index);
     }
 
     /**
@@ -131,7 +142,7 @@ public class MyLinkedListCustomTester {
     public void testRemoveTestOne() {
         //test if IllegalStateExcpetion is thrown for 
         try {
-
+            list3Elements.remove();
         }
         catch (IllegalStateException e) {
             exceptionThrown = true;
@@ -153,7 +164,8 @@ public class MyLinkedListCustomTester {
         catch (Exception e) {
             exceptionThrown = true;
         }
-        assertFalse("an exception should NOT be thrown", exceptionThrown);
+        assertTrue("an exception should be thrown (Remove test 2)",
+            exceptionThrown);
         assertEquals("Empty List should remain the same", init, listEmpty);
 
     }
@@ -165,7 +177,7 @@ public class MyLinkedListCustomTester {
     public void testAdd() {
         //test if method throws NullPointerExcpetion if element is null
         try {
-
+            list3Elements.add(null);
         }
         catch (NullPointerException e) {
             exceptionThrown = true;
