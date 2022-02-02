@@ -1,9 +1,9 @@
 
 /**
  * TODO: Add your file header
- * Name:
- * ID:
- * Email:
+ * Name: Morales, Kyle
+ * ID: a16162998
+ * Email: kmmorale@ucsd.edu
  * Sources used: Put "None" if you did not have any external help
  * Some example of sources used would be Tutors, Zybooks, and Lecture Slides
  * 
@@ -11,6 +11,10 @@
  */
 
 import static org.junit.Assert.*;
+
+import java.rmi.server.ExportException;
+import java.util.NoSuchElementException;
+
 import org.junit.*;
 
 /**
@@ -21,7 +25,8 @@ import org.junit.*;
  * does not take into account.
  */
 public class MyLinkedListCustomTester {
-
+    private MyLinkedList listEmpty, list3Elements;
+    private boolean exceptionThrown;
     /**
      * This sets up the test fixture. JUnit invokes this method before
      * every testXXX method. The @Before tag tells JUnit to run this method
@@ -29,7 +34,10 @@ public class MyLinkedListCustomTester {
      */
     @Before
     public void setUp() throws Exception {
-
+        listEmpty = new MyLinkedList();
+        list3Elements = new MyLinkedList();
+        list3Elements.add("")
+        exceptionThrown = false;
     }
 
     /**
@@ -37,7 +45,8 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testHasNext() {
-
+        //test if sentinal node returns true/empty list test 
+        assertFalse("Empty List should return false", listEmpty.hasNext());        
     }
 
     /**
@@ -45,6 +54,14 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testNext() {
+        //test if method throws NoSuchElementException
+        try {
+
+        }
+        catch(NoSuchElementException e) {
+            exceptionThrown = true;
+        }
+        assertTrue("method should throw exception(next)", exceptionThrown);
 
     }
 
@@ -53,7 +70,7 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testHasPrevious() {
-
+        //test if sentinel node returns true/empty list
     }
 
     /**
@@ -61,7 +78,14 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testPrevious() {
+        //test if method throws NoSuchElementException
+        try {
 
+        }
+        catch (NoSuchElementException e) {
+            exceptionThrown = true;
+        }
+        assertTrue("No Such Element Exception thrown (previous)", exceptionThrown);
     }
 
     /**
@@ -69,7 +93,7 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testNextIndex() {
-
+        //test on empty MLL list 
     }
 
     /**
@@ -77,7 +101,7 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testPreviousIndex() {
-
+        //test on empty MLL list
     }
 
     /**
@@ -85,7 +109,19 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testSet() {
-
+        //test exception throws
+        try {
+            
+        }
+        catch (NullPointerException e){
+            System.out.println("NullPointerException");
+            exceptionThrown = true;
+        }
+        catch (IllegalStateException e) {
+            System.out.println("IllegalStateExcpetion");
+            exceptionThrown = true;
+        }
+        assertTrue("has been thrown (set test)", exceptionThrown);
     }
 
     /**
@@ -93,7 +129,15 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testRemoveTestOne() {
+        //test if IllegalStateExcpetion is thrown for 
+        try {
 
+        }
+        catch (IllegalStateException e) {
+            exceptionThrown = true;
+        }
+        assertTrue("IllegalStateException thrown (Remove test 1)", 
+            exceptionThrown);
     }
 
     /**
@@ -101,6 +145,16 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testRemoveTestTwo() {
+        //remove from empty list 
+        MyLinkedList init = new MyLinkedList();
+        try {
+            listEmpty.remove();
+        }
+        catch (Exception e) {
+            exceptionThrown = true;
+        }
+        assertFalse("an exception should NOT be thrown", exceptionThrown);
+        assertEquals("Empty List should remain the same", init, listEmpty);
 
     }
 
@@ -109,7 +163,14 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testAdd() {
+        //test if method throws NullPointerExcpetion if element is null
+        try {
 
+        }
+        catch (NullPointerException e) {
+            exceptionThrown = true;
+        }
+        assertTrue("Add throws exception for null element", exceptionThrown);
     }
 
 }
