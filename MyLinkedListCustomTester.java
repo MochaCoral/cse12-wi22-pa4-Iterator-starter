@@ -27,6 +27,7 @@ import org.junit.*;
  */
 public class MyLinkedListCustomTester {
     private MyLinkedList listEmpty, list3Elements;
+    private MyLinkedList.MyListIterator listEmptyIter, list3ElIter;
     private boolean exceptionThrown;
     /**
      * This sets up the test fixture. JUnit invokes this method before
@@ -40,6 +41,8 @@ public class MyLinkedListCustomTester {
         list3Elements.add("Ruby");
         list3Elements.add("Sapphire");
         list3Elements.add("Emerald");
+        listEmptyIter = listEmpty.new MyListIterator();
+        list3ElIter = list3Elements.new MyListIterator();
         exceptionThrown = false;
     }
 
@@ -59,9 +62,9 @@ public class MyLinkedListCustomTester {
     public void testNext() {
         //test if method throws NoSuchElementException
         try {
-            list3Elements.next();
-            list3Elements.next();
-            list3Elements.next();
+            for(int i = 0; i < 4; i++) {
+                list3ElIter.next();
+            }
         }
         catch(NoSuchElementException e) {
             exceptionThrown = true;
@@ -78,7 +81,7 @@ public class MyLinkedListCustomTester {
     public void testHasPrevious() {
         //test if sentinel node returns true/empty list
         assertFalse("Empty list should return false(hasPrevious)", 
-            listEmpty.hasPrevious());
+            listEmptyIter.hasPrevious());
     }
 
     /**
@@ -88,7 +91,7 @@ public class MyLinkedListCustomTester {
     public void testPrevious() {
         //test if method throws NoSuchElementException
         try {
-            list3Elements.previous();
+            list3ElIter.previous();
         }
         catch (NoSuchElementException e) {
             exceptionThrown = true;
@@ -101,7 +104,7 @@ public class MyLinkedListCustomTester {
      */
     @Test
     public void testNextIndex() {
-        int index = listEmpty.nextIndex();
+        int index = listEmptyIter.nextIndex();
         assertEquals("nextIndex should return -1", -1, index);
     }
 
@@ -111,7 +114,7 @@ public class MyLinkedListCustomTester {
     @Test
     public void testPreviousIndex() {
         //test on empty MLL list
-        int index = listEmpty.previousIndex();
+        int index = listEmptyIter.previousIndex();
         assertEquals("previousIndex should return -1", -1, index);
     }
 
@@ -122,17 +125,26 @@ public class MyLinkedListCustomTester {
     public void testSet() {
         //test exception throws
         try {
-            
+            list3ElIter.next();
+            list3ElIter.set(null);
         }
         catch (NullPointerException e){
-            System.out.println("NullPointerException");
             exceptionThrown = true;
+        }
+        assertTrue("NullPointerException has been thrown (set)", exceptionThrown);
+        
+    }
+
+    @Test
+    public void testSetTestTwo() {
+        try {
+            list3ElIter.set("Diamond");
         }
         catch (IllegalStateException e) {
-            System.out.println("IllegalStateExcpetion");
             exceptionThrown = true;
         }
-        assertTrue("has been thrown (set test)", exceptionThrown);
+        assertTrue("IllegalStateException has been thrown (set)", 
+            exceptionThrown);
     }
 
     /**
@@ -142,7 +154,7 @@ public class MyLinkedListCustomTester {
     public void testRemoveTestOne() {
         //test if IllegalStateExcpetion is thrown for 
         try {
-            list3Elements.remove();
+            list3ElIter.remove();
         }
         catch (IllegalStateException e) {
             exceptionThrown = true;
@@ -159,7 +171,8 @@ public class MyLinkedListCustomTester {
         //remove from empty list 
         MyLinkedList init = new MyLinkedList();
         try {
-            listEmpty.remove();
+            listEmptyIter.next();
+            listEmptyIter.remove();
         }
         catch (Exception e) {
             exceptionThrown = true;
@@ -177,7 +190,7 @@ public class MyLinkedListCustomTester {
     public void testAdd() {
         //test if method throws NullPointerExcpetion if element is null
         try {
-            list3Elements.add(null);
+            list3ElIter.add(null);
         }
         catch (NullPointerException e) {
             exceptionThrown = true;

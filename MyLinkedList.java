@@ -8,6 +8,7 @@
 
 import java.util.AbstractList;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 /** 
  * MyLinkedList<E> is an extension of te AbstractList<E> class. 
@@ -90,58 +91,146 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	}
 
 	protected class MyListIterator implements ListIterator<E> {
+		Node left;
+		Node right;
+		int idx;
+		boolean forward;
+		boolean canRemoveOrSet;
 
-		@Override
-		public boolean hasNext() {
-			// TODO Auto-generated method stub
-			return false;
+		public MyListIterator() {
+			idx = 0;
+			forward = true;
+			canRemoveOrSet = false;
+			left = head;
+			right = head.getNext();
 		}
 
 		@Override
-		public E next() {
-			// TODO Auto-generated method stub
-			return null;
+		public boolean hasNext() {
+			if(right.getElement() != null) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+
+		@Override
+		public E next() throws NoSuchElementException {
+			if(!this.hasNext()) {
+				throw new NoSuchElementException();
+			}
+			else {
+				forward = true;
+				canRemoveOrSet = true;
+				left = right;
+				right = right.getNext();
+				idx++;
+				return left.getElement();
+			}
 		}
 
 		@Override
 		public boolean hasPrevious() {
-			// TODO Auto-generated method stub
-			return false;
+			if(left.getElement() != null) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 
 		@Override
-		public E previous() {
-			// TODO Auto-generated method stub
-			return null;
+		public E previous() throws NoSuchElementException {
+			if(!this.hasPrevious()) {
+				throw new NoSuchElementException();
+			}
+			else {
+				forward = false;
+				canRemoveOrSet = true;
+				right = left;
+				left = left.getPrev();
+				idx--;
+				return right.getElement();
+			}
 		}
 
 		@Override
 		public int nextIndex() {
-			// TODO Auto-generated method stub
-			return 0;
+			int nidx = idx;
+			if(this.hasNext()) {
+				return ++nidx;
+			}
+			else {
+				return size;
+			}
 		}
 
 		@Override
 		public int previousIndex() {
-			// TODO Auto-generated method stub
-			return 0;
+			int pidx = idx;
+			if(this.hasPrevious()) {
+				return --pidx;
+			}
+			else {
+				return -1;
+			}
 		}
 
 		@Override
-		public void remove() {
-			// TODO Auto-generated method stub
+		public void remove() throws IllegalStateException {
+			if(!canRemoveOrSet) {
+				throw new IllegalStateException();
+			}
+			else {
+				if(forward) {
+					right.setPrev(left.getPrev());
+					left.getPrev().setNext(right);
+				}
+				else {
+					left.setNext(right.getPrev());
+					right.getNext().setPrev(left);
+				}
+				size--;
+			}
+		}
+
+		@Override
+		public void set(E e) throws IllegalStateException, 
+			NullPointerException {
+			if(e == null) {
+				throw new NullPointerException();
+			}
+			else if(!canRemoveOrSet) {
+				throw new IllegalStateException();
+			}
+			else {
+				if(forward) {
+					left.setElement(e);
+				}
+				else {
+					right.setElement(e);
+				}
+			}
+			
 			
 		}
 
 		@Override
-		public void set(E e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void add(E e) {
-			// TODO Auto-generated method stub
+		public void add(E e) throws NullPointerException{
+			Node newNode = new Node(e);
+			if(e == null) {
+				throw new NullPointerException();
+			}
+			else {
+				left.setNext(newNode);
+				right.setPrev(newNode);
+				newNode.setPrev(left);
+				newNode.setNext(right);
+				right = newNode;
+				canRemoveOrSet = false;
+				size++;
+			}
 			
 		}
 		
