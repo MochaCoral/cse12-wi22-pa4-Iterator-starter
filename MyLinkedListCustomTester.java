@@ -52,7 +52,7 @@ public class MyLinkedListCustomTester {
     @Test
     public void testHasNext() {
         //test if sentinal node returns true/empty list test 
-        assertFalse("Empty List should return false", listEmpty.hasNext());        
+        assertFalse("Empty List should return false", listEmptyIter.hasNext());        
     }
 
     /**
@@ -105,7 +105,7 @@ public class MyLinkedListCustomTester {
     @Test
     public void testNextIndex() {
         int index = listEmptyIter.nextIndex();
-        assertEquals("nextIndex should return -1", -1, index);
+        assertEquals("nextIndex should return 0", 0, index);
     }
 
     /**

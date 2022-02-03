@@ -107,11 +107,11 @@ public class MyLinkedList<E> extends AbstractList<E> {
 
 		@Override
 		public boolean hasNext() {
-			if(right.getElement() != null) {
-				return true;
+			if(idx == size) {
+				return false;
 			}
 			else {
-				return false;
+				return true;
 			}
 		}
 
@@ -132,11 +132,11 @@ public class MyLinkedList<E> extends AbstractList<E> {
 
 		@Override
 		public boolean hasPrevious() {
-			if(left.getElement() != null) {
-				return true;
+			if(idx == 0) {
+				return false;
 			}
 			else {
-				return false;
+				return true;
 			}
 		}
 
@@ -157,9 +157,8 @@ public class MyLinkedList<E> extends AbstractList<E> {
 
 		@Override
 		public int nextIndex() {
-			int nidx = idx;
 			if(this.hasNext()) {
-				return ++nidx;
+				return idx;
 			}
 			else {
 				return size;
@@ -186,12 +185,16 @@ public class MyLinkedList<E> extends AbstractList<E> {
 				if(forward) {
 					right.setPrev(left.getPrev());
 					left.getPrev().setNext(right);
+					left = left.getPrev();
+					idx--;
 				}
 				else {
-					left.setNext(right.getPrev());
+					left.setNext(right.getNext());
 					right.getNext().setPrev(left);
+					right = right.getNext();
 				}
 				size--;
+				canRemoveOrSet = false;
 			}
 		}
 
@@ -227,8 +230,9 @@ public class MyLinkedList<E> extends AbstractList<E> {
 				right.setPrev(newNode);
 				newNode.setPrev(left);
 				newNode.setNext(right);
-				right = newNode;
+				left = newNode;
 				canRemoveOrSet = false;
+				idx++;
 				size++;
 			}
 			
